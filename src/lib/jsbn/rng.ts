@@ -4,13 +4,14 @@ import {Arcfour, prng_newstate, rng_psize} from "./prng4";
 let rng_state:Arcfour;
 let rng_pool:number[] = null;
 let rng_pptr:number;
+const hasWin: boolean = typeof window === 'object' && !!window;
 
 // Initialize the pool with junk if needed.
-if (rng_pool == null && typeof window === 'object' && !!window) {
+if (rng_pool == null) {
   rng_pool = [];
   rng_pptr = 0;
   let t;
-  if (window.crypto && window.crypto.getRandomValues) {
+  if (hasWin && window.crypto && window.crypto.getRandomValues) {
     // Extract entropy (2048 bits) from RNG if available
     const z = new Uint32Array(256);
     window.crypto.getRandomValues(z);
@@ -40,9 +41,9 @@ if (rng_pool == null && typeof window === 'object' && !!window) {
       // Sometimes Firefox will deny permission to access event properties for some reason. Ignore.
     }
   };
-  if (window.addEventListener) {
+  if (hasWin && window.addEventListener) {
       window.addEventListener("mousemove", onMouseMoveListener, false);
-  } else if ((window as any).attachEvent) {
+  } else if (hasWin && (window as any).attachEvent) {
       (window as any).attachEvent("onmousemove", onMouseMoveListener);
   }
 

@@ -6,6 +6,7 @@
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "devDependencies": {
+    "md5": "^2.3.0",
     "mocha": "^9.2.2",
     "typescript": "^4.2.4",
     "webpack": "^5.35.1",
